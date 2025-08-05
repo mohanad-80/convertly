@@ -3,6 +3,8 @@ package com.konecta.internship.convertly.controller;
 import java.util.Arrays;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,10 +14,19 @@ import com.konecta.internship.convertly.enums.TemperatureUnit;
 import com.konecta.internship.convertly.enums.TimeUnit;
 import com.konecta.internship.convertly.enums.WeightUnit;
 import com.konecta.internship.convertly.exception.InvalidCategoryException;
+import com.konecta.internship.convertly.model.ConversionRequest;
 import com.konecta.internship.convertly.model.HealthResponse;
 
 @RestController
 public class ConverterController {
+  @PostMapping("/convert")
+  public void convert(@RequestBody ConversionRequest req){
+    System.out.println(req.getCategory());
+    System.out.println(req.getFromUnit());
+    System.out.println(req.getToUnit());
+    System.out.println(req.getValue());
+  }
+
   @GetMapping("/categories")
   public Category[] getCategories() {
     return Category.values();
