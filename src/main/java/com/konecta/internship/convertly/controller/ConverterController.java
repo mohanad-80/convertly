@@ -22,7 +22,7 @@ import jakarta.validation.Valid;
 @RestController
 public class ConverterController {
   @PostMapping("/convert")
-  public void convert(@RequestBody @Valid ConversionRequest req){
+  public void convert(@RequestBody @Valid ConversionRequest req) {
     System.out.println(req.getCategory());
     System.out.println(req.getFromUnit());
     System.out.println(req.getToUnit());
@@ -39,16 +39,16 @@ public class ConverterController {
     category = category.toUpperCase();
     String[] result = new String[] {};
 
-    if (Category.Temperature.name().toUpperCase().equals(category)) {
+    if (Category.Temperature.name().equalsIgnoreCase(category)) {
       result = Arrays.stream(TemperatureUnit.values()).map(TemperatureUnit::name).toArray(String[]::new);
 
-    } else if (Category.Length.name().toUpperCase().equals(category)) {
+    } else if (Category.Length.name().equalsIgnoreCase(category)) {
       result = Arrays.stream(LengthUnit.values()).map(LengthUnit::name).toArray(String[]::new);
 
-    } else if (Category.Weight.name().toUpperCase().equals(category)) {
+    } else if (Category.Weight.name().equalsIgnoreCase(category)) {
       result = Arrays.stream(WeightUnit.values()).map(WeightUnit::name).toArray(String[]::new);
 
-    } else if (Category.Time.name().toUpperCase().equals(category)) {
+    } else if (Category.Time.name().equalsIgnoreCase(category)) {
       result = Arrays.stream(TimeUnit.values()).map(TimeUnit::name).toArray(String[]::new);
 
     } else {
@@ -59,7 +59,7 @@ public class ConverterController {
   }
 
   @GetMapping("/health")
-  public HealthResponse checkHealth(){
+  public HealthResponse checkHealth() {
     return new HealthResponse("Unit Converter API is up and running");
   }
 }
