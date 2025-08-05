@@ -1,9 +1,16 @@
 package com.konecta.internship.convertly.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 public class ConversionRequest {
+  @NotBlank
   private String category;
+  @NotBlank
   private String fromUnit;
+  @NotBlank
   private String toUnit;
+  @Positive
   private int value;
 
   public ConversionRequest() {

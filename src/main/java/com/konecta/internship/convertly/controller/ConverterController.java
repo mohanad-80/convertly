@@ -17,10 +17,12 @@ import com.konecta.internship.convertly.exception.InvalidCategoryException;
 import com.konecta.internship.convertly.model.ConversionRequest;
 import com.konecta.internship.convertly.model.HealthResponse;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class ConverterController {
   @PostMapping("/convert")
-  public void convert(@RequestBody ConversionRequest req){
+  public void convert(@RequestBody @Valid ConversionRequest req){
     System.out.println(req.getCategory());
     System.out.println(req.getFromUnit());
     System.out.println(req.getToUnit());
