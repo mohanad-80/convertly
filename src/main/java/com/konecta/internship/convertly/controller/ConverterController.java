@@ -12,6 +12,7 @@ import com.konecta.internship.convertly.enums.TemperatureUnit;
 import com.konecta.internship.convertly.enums.TimeUnit;
 import com.konecta.internship.convertly.enums.WeightUnit;
 import com.konecta.internship.convertly.exception.InvalidCategoryException;
+import com.konecta.internship.convertly.model.HealthResponse;
 
 @RestController
 public class ConverterController {
@@ -42,5 +43,10 @@ public class ConverterController {
     }
 
     return result;
+  }
+
+  @GetMapping("/health")
+  public HealthResponse checkHealth(){
+    return new HealthResponse("Unit Converter API is up and running");
   }
 }
