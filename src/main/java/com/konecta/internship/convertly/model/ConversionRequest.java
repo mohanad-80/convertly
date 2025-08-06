@@ -1,21 +1,24 @@
 package com.konecta.internship.convertly.model;
 
 import com.konecta.internship.convertly.enums.Category;
+import com.konecta.internship.convertly.validation.annotation.ValidConversionRequest;
 import com.konecta.internship.convertly.validation.annotation.ValueOfEnumIgnoreCase;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
+@ValidConversionRequest
 public class ConversionRequest {
   @NotNull
   @ValueOfEnumIgnoreCase(enumClass = Category.class, message = "invalid category")
   private String category;
+
   @NotBlank
   private String fromUnit;
+
   @NotBlank
   private String toUnit;
-  @Positive
+
   private int value;
 
   public ConversionRequest() {
