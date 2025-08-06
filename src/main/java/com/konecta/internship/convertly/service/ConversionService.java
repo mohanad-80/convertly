@@ -5,12 +5,21 @@ import org.springframework.stereotype.Service;
 
 import com.konecta.internship.convertly.enums.Category;
 import com.konecta.internship.convertly.enums.LengthUnit;
+import com.konecta.internship.convertly.enums.TemperatureUnit;
+import com.konecta.internship.convertly.enums.TimeUnit;
+import com.konecta.internship.convertly.enums.WeightUnit;
 import com.konecta.internship.convertly.model.ConversionRequest;
 
 @Service
 public class ConversionService {
   @Autowired
   private LengthService lengthService;
+  @Autowired
+  private TimeService timeService;
+  @Autowired
+  private WeightService weightService;
+  @Autowired
+  private TemperatureService temperatureService;
 
   public double convert(ConversionRequest req) {
     Category category = Category
@@ -24,16 +33,19 @@ public class ConversionService {
             LengthUnit.valueOf(req.getToUnit()));
         break;
       case Temperature:
-
+        result = temperatureService.convertTemperature(req.getValue(),
+            TemperatureUnit.valueOf(req.getFromUnit()),
+            TemperatureUnit.valueOf(req.getToUnit()));
         break;
       case Time:
-
+        result = timeService.convertTime(req.getValue(),
+            TimeUnit.valueOf(req.getFromUnit()),
+            TimeUnit.valueOf(req.getToUnit()));
         break;
       case Weight:
-
-        break;
-
-      default:
+        result = weightService.convertWeight(req.getValue(),
+            WeightUnit.valueOf(req.getFromUnit()),
+            WeightUnit.valueOf(req.getToUnit()));
         break;
     }
 
