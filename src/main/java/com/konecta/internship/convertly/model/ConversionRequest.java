@@ -19,7 +19,7 @@ public class ConversionRequest {
   private String toUnit;
 
   @NotNull
-  private Integer value;
+  private Double value;
 
   public ConversionRequest() {
   }
@@ -48,11 +48,11 @@ public class ConversionRequest {
     this.toUnit = toUnit;
   }
 
-  public Integer getValue() {
+  public Double getValue() {
     return value;
   }
 
-  public void setValue(Integer value) {
+  public void setValue(Double value) {
     this.value = value;
   }
 }

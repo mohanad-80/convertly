@@ -21,7 +21,7 @@ public class ConversionRequestValidator implements ConstraintValidator<ValidConv
     String category = request.getCategory();
     String from = request.getFromUnit();
     String to = request.getToUnit();
-    Integer value = request.getValue();
+    Double value = request.getValue();
 
     if (category == null || from == null || to == null || value == null)
       return true; // Let @NotNull handle null values
@@ -80,7 +80,7 @@ public class ConversionRequestValidator implements ConstraintValidator<ValidConv
     return false;
   }
 
-  private boolean validateValue(int value, Category category, ConstraintValidatorContext context) {
+  private boolean validateValue(Double value, Category category, ConstraintValidatorContext context) {
     boolean allowNegative = category == Category.Temperature; // Only allow for temperature
 
     if (!allowNegative && value < 0) {
