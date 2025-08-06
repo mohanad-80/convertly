@@ -2,6 +2,7 @@ package com.konecta.internship.convertly.controller;
 
 import java.util.Arrays;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,18 +16,21 @@ import com.konecta.internship.convertly.enums.TimeUnit;
 import com.konecta.internship.convertly.enums.WeightUnit;
 import com.konecta.internship.convertly.exception.InvalidCategoryException;
 import com.konecta.internship.convertly.model.ConversionRequest;
+import com.konecta.internship.convertly.model.ConversionResponse;
 import com.konecta.internship.convertly.model.HealthResponse;
+import com.konecta.internship.convertly.service.ConversionService;
 
 import jakarta.validation.Valid;
 
 @RestController
 public class ConverterController {
+  @Autowired
+  private ConversionService conversionService;
+
   @PostMapping("/convert")
-  public void convert(@RequestBody @Valid ConversionRequest req) {
-    System.out.println(req.getCategory());
-    System.out.println(req.getFromUnit());
-    System.out.println(req.getToUnit());
-    System.out.println(req.getValue());
+  public ConversionResponse convert(@RequestBody @Valid ConversionRequest req) {
+    double result = conversionService.convert(req);
+    return new ConversionResponse(result, "success");
   }
 
   @GetMapping("/categories")
