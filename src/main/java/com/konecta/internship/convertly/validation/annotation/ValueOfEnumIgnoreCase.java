@@ -17,7 +17,10 @@ import jakarta.validation.Payload;
 @Documented
 public @interface ValueOfEnumIgnoreCase {
   Class<? extends Enum<?>> enumClass();
+
   String message() default "invalid value";
+
   Class<?>[] groups() default {};
+
   Class<? extends Payload>[] payload() default {};
 }
