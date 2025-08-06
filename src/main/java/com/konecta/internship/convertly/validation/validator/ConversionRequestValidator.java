@@ -21,10 +21,10 @@ public class ConversionRequestValidator implements ConstraintValidator<ValidConv
     String category = request.getCategory();
     String from = request.getFromUnit();
     String to = request.getToUnit();
-    int value = request.getValue();
+    Integer value = request.getValue();
 
-    if (category == null)
-      return true; // Let @NotNull handle null category
+    if (category == null || from == null || to == null || value == null)
+      return true; // Let @NotNull handle null values
 
     Category cat;
     try {
