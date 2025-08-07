@@ -21,6 +21,7 @@ import com.konecta.internship.convertly.model.HealthResponse;
 import com.konecta.internship.convertly.service.ConversionService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,18 +41,30 @@ public class ConverterController {
       @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content(mediaType = "application/json")), })
   @PostMapping("/convert")
   public ConversionResponse convert(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request to convert a number between two units", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = ConversionRequest.class), examples = @ExampleObject(value = "{ \"category\": \"temperature\", \"fromUnit\": \"celsius\", \"toUnit\": \"fahrenheit\", \"value\": 25 }"))) @RequestBody @Valid ConversionRequest req) {
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request to convert a number between two units", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = ConversionRequest.class), examples = @ExampleObject(value = "{ \"category\": \"Temperature\", \"fromUnit\": \"Celsius\", \"toUnit\": \"Fahrenheit\", \"value\": 25 }"))) @RequestBody @Valid ConversionRequest req) {
     double result = conversionService.convert(req);
     return new ConversionResponse(result, "success");
   }
 
+  @Operation(summary = "List of possible categories")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of categories", content = {
+          @Content(mediaType = "application/json", examples = @ExampleObject(value = "[\"Temperature\", \"Length\", \"Weight\", \"Time\"]")) }) })
   @GetMapping("/categories")
   public Category[] getCategories() {
     return Category.values();
   }
 
+  @Operation(summary = "List of units for a certain category")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of units", content = {
+          @Content(mediaType = "application/json", examples = @ExampleObject(value = "[\"Celsius\", \"Fahrenheit\", \"Kelvin\"]")) }) })
   @GetMapping("/units")
-  public String[] getCategoryUnits(@RequestParam String category) {
+  public String[] getCategoryUnits(
+      @Parameter(description = "The category to list its units", examples = {
+          @ExampleObject(name = "Temperature", value = "Temperature", description = "Temperature category"),
+          @ExampleObject(name = "Time", value = "Time", description = "Time category")
+      }) @RequestParam String category) {
     category = category.toUpperCase();
     String[] result = new String[] {};
 
@@ -74,11 +87,19 @@ public class ConverterController {
     return result;
   }
 
+  @Operation(summary = "Returns a sample request body")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Example request body", content = {
+          @Content(mediaType = "application/json", schema = @Schema(implementation = ConversionRequest.class), examples = @ExampleObject(value = "{ \"category\": \"Temperature\", \"fromUnit\": \"Celsius\", \"toUnit\": \"Fahrenheit\", \"value\": 25 }")) }) })
   @GetMapping("/sample-payload")
   public ConversionRequest sample() {
     return new ConversionRequest("Temperature", "Celsius", "Fahrenheit", 25.0);
   }
 
+  @Operation(summary = "Simple health check to confirm the service is running")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "confirming service is running", content = {
+          @Content(mediaType = "application/json", schema = @Schema(implementation = HealthResponse.class), examples = @ExampleObject(value = "{ \"status\": \"Unit Converter API is up and running\" }")) }) })
   @GetMapping("/health")
   public HealthResponse checkHealth() {
     return new HealthResponse("Unit Converter API is up and running");
