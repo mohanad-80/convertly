@@ -24,6 +24,14 @@ public class ConversionRequest {
   public ConversionRequest() {
   }
 
+  public ConversionRequest(@NotNull String category, @NotNull String fromUnit, @NotNull String toUnit,
+      @NotNull Double value) {
+    this.category = category;
+    this.fromUnit = fromUnit;
+    this.toUnit = toUnit;
+    this.value = value;
+  }
+
   public String getCategory() {
     return category;
   }

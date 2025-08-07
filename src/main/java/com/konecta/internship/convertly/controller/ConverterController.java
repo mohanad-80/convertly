@@ -62,6 +62,11 @@ public class ConverterController {
     return result;
   }
 
+  @GetMapping("/sample-payload")
+  public ConversionRequest sample() {
+    return new ConversionRequest("Temperature", "Celsius", "Fahrenheit", 25.0);
+  }
+
   @GetMapping("/health")
   public HealthResponse checkHealth() {
     return new HealthResponse("Unit Converter API is up and running");
