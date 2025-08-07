@@ -24,28 +24,30 @@ public class ConversionService {
   public double convert(ConversionRequest req) {
     Category category = Category
         .valueOf(req.getCategory().substring(0, 1).toUpperCase() + req.getCategory().substring(1).toLowerCase());
+    String fromUnit = req.getFromUnit().substring(0, 1).toUpperCase() + req.getFromUnit().substring(1).toLowerCase();
+    String toUnit = req.getToUnit().substring(0, 1).toUpperCase() + req.getToUnit().substring(1).toLowerCase();
     double result = 0.0;
 
     switch (category) {
       case Length:
         result = lengthService.convertLength(req.getValue(),
-            LengthUnit.valueOf(req.getFromUnit()),
-            LengthUnit.valueOf(req.getToUnit()));
+            LengthUnit.valueOf(fromUnit),
+            LengthUnit.valueOf(toUnit));
         break;
       case Temperature:
         result = temperatureService.convertTemperature(req.getValue(),
-            TemperatureUnit.valueOf(req.getFromUnit()),
-            TemperatureUnit.valueOf(req.getToUnit()));
+            TemperatureUnit.valueOf(fromUnit),
+            TemperatureUnit.valueOf(toUnit));
         break;
       case Time:
         result = timeService.convertTime(req.getValue(),
-            TimeUnit.valueOf(req.getFromUnit()),
-            TimeUnit.valueOf(req.getToUnit()));
+            TimeUnit.valueOf(fromUnit),
+            TimeUnit.valueOf(toUnit));
         break;
       case Weight:
         result = weightService.convertWeight(req.getValue(),
-            WeightUnit.valueOf(req.getFromUnit()),
-            WeightUnit.valueOf(req.getToUnit()));
+            WeightUnit.valueOf(fromUnit),
+            WeightUnit.valueOf(toUnit));
         break;
     }
 
