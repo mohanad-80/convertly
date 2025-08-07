@@ -20,6 +20,12 @@ import com.konecta.internship.convertly.model.ConversionResponse;
 import com.konecta.internship.convertly.model.HealthResponse;
 import com.konecta.internship.convertly.service.ConversionService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
@@ -27,8 +33,14 @@ public class ConverterController {
   @Autowired
   private ConversionService conversionService;
 
+  @Operation(summary = "Converting numbers between units")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Converted the number successfully", content = {
+          @Content(mediaType = "application/json", schema = @Schema(implementation = ConversionResponse.class)) }),
+      @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content(mediaType = "application/json")), })
   @PostMapping("/convert")
-  public ConversionResponse convert(@RequestBody @Valid ConversionRequest req) {
+  public ConversionResponse convert(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request to convert a number between two units", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = ConversionRequest.class), examples = @ExampleObject(value = "{ \"category\": \"temperature\", \"fromUnit\": \"celsius\", \"toUnit\": \"fahrenheit\", \"value\": 25 }"))) @RequestBody @Valid ConversionRequest req) {
     double result = conversionService.convert(req);
     return new ConversionResponse(result, "success");
   }
