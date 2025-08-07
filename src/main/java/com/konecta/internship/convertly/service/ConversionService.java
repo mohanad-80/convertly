@@ -8,6 +8,7 @@ import com.konecta.internship.convertly.enums.LengthUnit;
 import com.konecta.internship.convertly.enums.TemperatureUnit;
 import com.konecta.internship.convertly.enums.TimeUnit;
 import com.konecta.internship.convertly.enums.WeightUnit;
+import com.konecta.internship.convertly.model.ConversionRecord;
 import com.konecta.internship.convertly.model.ConversionRequest;
 
 @Service
@@ -20,6 +21,8 @@ public class ConversionService {
   private WeightService weightService;
   @Autowired
   private TemperatureService temperatureService;
+  @Autowired
+  private ConversionHistoryService conversionHistoryService;
 
   public double convert(ConversionRequest req) {
     Category category = Category
@@ -50,6 +53,9 @@ public class ConversionService {
             WeightUnit.valueOf(toUnit));
         break;
     }
+
+    conversionHistoryService
+        .addRecord(new ConversionRecord(req.getCategory(), req.getFromUnit(), req.getToUnit(), req.getValue(), result));
 
     return result;
   }

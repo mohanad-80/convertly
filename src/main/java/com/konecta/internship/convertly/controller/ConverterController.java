@@ -1,6 +1,7 @@
 package com.konecta.internship.convertly.controller;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,11 @@ import com.konecta.internship.convertly.enums.TemperatureUnit;
 import com.konecta.internship.convertly.enums.TimeUnit;
 import com.konecta.internship.convertly.enums.WeightUnit;
 import com.konecta.internship.convertly.exception.InvalidCategoryException;
+import com.konecta.internship.convertly.model.ConversionRecord;
 import com.konecta.internship.convertly.model.ConversionRequest;
 import com.konecta.internship.convertly.model.ConversionResponse;
 import com.konecta.internship.convertly.model.HealthResponse;
+import com.konecta.internship.convertly.service.ConversionHistoryService;
 import com.konecta.internship.convertly.service.ConversionService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +36,8 @@ import jakarta.validation.Valid;
 public class ConverterController {
   @Autowired
   private ConversionService conversionService;
+  @Autowired
+  private ConversionHistoryService conversionHistoryService;
 
   @Operation(summary = "Converting numbers between units")
   @ApiResponses(value = {
@@ -103,5 +108,10 @@ public class ConverterController {
   @GetMapping("/health")
   public HealthResponse checkHealth() {
     return new HealthResponse("Unit Converter API is up and running");
+  }
+
+  @GetMapping("/history/json")
+  public List<ConversionRecord> getHistoryJson() {
+    return conversionHistoryService.getHistory();
   }
 }
