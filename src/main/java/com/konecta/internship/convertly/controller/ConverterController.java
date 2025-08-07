@@ -110,6 +110,10 @@ public class ConverterController {
     return new HealthResponse("Unit Converter API is up and running");
   }
 
+  @Operation(summary = "Get conversion history as JSON")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "History of conversions")
+  })
   @GetMapping("/history/json")
   public List<ConversionRecord> getHistoryJson() {
     return conversionHistoryService.getHistory();
