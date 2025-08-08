@@ -32,6 +32,7 @@ Users can:
   - Temperature (e.g., Celsius to Fahrenheit)
   - Time (e.g., hours to seconds)
   - Weight (e.g., kilograms to pounds)
+- Get the **conversion formula** used in each response (e.g., `(100°C × 9/5) + 32 = 212°F`)
 - Download conversion history (per session) as **JSON**
 - Check service health
 - List all available **categories** and **units**
@@ -39,14 +40,14 @@ Users can:
 
 ### Main Endpoints
 
-| Method | Path                | Description                                 |
-| ------ | ------------------- | ------------------------------------------- |
-| POST   | `/convert`          | Perform a unit conversion                   |
-| GET    | `/categories`       | Get all conversion categories               |
-| GET    | `/units?category=X` | Get all units in the given category         |
-| GET    | `/sample-payload`   | Get a sample conversion request body        |
-| GET    | `/health`           | Service health check                        |
-| GET    | `/history/json`     | Download session conversion history in JSON |
+| Method | Path                | Description                                                                 |
+| ------ | ------------------- | --------------------------------------------------------------------------- |
+| POST   | `/convert`          | Perform a unit conversion and return the result along with the formula used |
+| GET    | `/categories`       | Get all conversion categories                                               |
+| GET    | `/units?category=X` | Get all units in the given category                                         |
+| GET    | `/sample-payload`   | Get a sample conversion request body                                        |
+| GET    | `/health`           | Service health check                                                        |
+| GET    | `/history/json`     | Download session conversion history in JSON                                 |
 
 ---
 
@@ -131,7 +132,18 @@ Working with enums was tricky, because I couldn't use it as type directly in the
 
 Setting up swagger UI was easy, but documenting the API endpoints was not. The syntax was new and challenging to me, even though I worked with swagger a lot in Node.Js and Nest.Js but it was my first time with spring boot. I managed to document all APIs with examples for the body request and for the response too along with description for each one.
 
-I created a global exception handler to handle both custom exceptions like `InvalidCategoryException` for when validating the request, and also other validation exceptions and to send them all in a json object, so when the user has multiple issues with validating the request body, he will get all of them at once. 
+I created a global exception handler to handle both custom exceptions like `InvalidCategoryException` for when validating the request, and also other validation exceptions and to send them all in a json object, so when the user has multiple issues with validating the request body, he will get all of them at once.
+
+I added a bonus feature to improve API transparency, every conversion response now includes the actual formula used to compute the result. I implemented this using a `FormulaTemplatesService` that stores all possible conversion templates. When a conversion is made, the service fetches the appropriate formula and injects the `value` and `result` into it dynamically, which is then included in the response as a human-readable string.
+
+sample response:
+```json
+{
+  "result": 212.0,
+  "formula": "(100°C × 9/5) + 32 = 212°F",
+  "status": "success"
+}
+```
 
 ### Useful Resources
 
