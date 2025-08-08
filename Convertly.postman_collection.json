@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "2609040d-c99d-45c7-b361-f8a1bf052f2b",
+		"name": "Convertly",
+		"description": "A Unit Converter REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28813096"
+	},
+	"item": [
+		{
+			"name": "get categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/categories",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get units",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/units?category=temperaturE",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"units"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "temperaturE"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "convert",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"category\": \"temperature\",\r\n  \"fromUnit\": \"celsius\",\r\n  \"toUnit\": \"fahrenheit\",\r\n  \"value\": 25\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/convert",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"convert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sample payload",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/sample-payload",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"sample-payload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/history/json",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"history",
+						"json"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
