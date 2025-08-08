@@ -2,10 +2,12 @@ package com.konecta.internship.convertly.model;
 
 public class ConversionResponse {
   private double result;
+  private String formula;
   private String status;
 
-  public ConversionResponse(double result, String status) {
+  public ConversionResponse(double result, String formula, String status) {
     this.result = result;
+    this.formula = formula;
     this.status = status;
   }
 
@@ -15,6 +17,14 @@ public class ConversionResponse {
 
   public void setResult(double result) {
     this.result = result;
+  }
+
+  public String getFormula() {
+    return formula;
+  }
+
+  public void setFormula(String formula) {
+    this.formula = formula;
   }
 
   public String getStatus() {

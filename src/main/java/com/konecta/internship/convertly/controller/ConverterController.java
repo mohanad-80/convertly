@@ -22,6 +22,7 @@ import com.konecta.internship.convertly.model.ConversionResponse;
 import com.konecta.internship.convertly.model.HealthResponse;
 import com.konecta.internship.convertly.service.ConversionHistoryService;
 import com.konecta.internship.convertly.service.ConversionService;
+import com.konecta.internship.convertly.service.FormulaTemplatesService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,6 +39,8 @@ public class ConverterController {
   private ConversionService conversionService;
   @Autowired
   private ConversionHistoryService conversionHistoryService;
+  @Autowired
+  private FormulaTemplatesService formulaTemplatesService;
 
   @Operation(summary = "Converting numbers between units")
   @ApiResponses(value = {
@@ -48,7 +51,8 @@ public class ConverterController {
   public ConversionResponse convert(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Request to convert a number between two units", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = ConversionRequest.class), examples = @ExampleObject(value = "{ \"category\": \"Temperature\", \"fromUnit\": \"Celsius\", \"toUnit\": \"Fahrenheit\", \"value\": 25 }"))) @RequestBody @Valid ConversionRequest req) {
     double result = conversionService.convert(req);
-    return new ConversionResponse(result, "success");
+    String formula = formulaTemplatesService.getFormula(req.getFromUnit(), req.getToUnit(), req.getValue(), result);
+    return new ConversionResponse(result, formula, "success");
   }
 
   @Operation(summary = "List of possible categories")
