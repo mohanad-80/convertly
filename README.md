@@ -15,6 +15,7 @@ This is the second task for the [Konecta](https://konecta.com/) fullstack develo
 - [Project Structure](#project-structure)
 - [My Process](#my-process)
   - [Built With](#built-with)
+  - [Implementation Details](#implementation-details)
   - [Useful Resources](#useful-resources)
 - [Author](#author)
 
@@ -117,6 +118,20 @@ src/
 - **Spring Validation (Jakarta)**
 - **Swagger (Springdoc OpenAPI)**
 - **Postman** (for testing)
+
+### Implementation Details
+
+The validation part was a bit tricky as I needed to validate multiple fields on the request body with conditional validation, so I needed to build a custom validator that checks if the `fromUnit` and `toUnit` belong to the `category` and also if the `value` is valid for that `category` (i.e. negative values for time is invalid, but for temperature it is valid).
+
+I also build a custom validator that can be reused in other places in the project or in other projects. This validator checks if a field's value is of an enum type. This was not available out-of-the-box in Jakarta, so I had to build it myself.
+
+For storing the conversion history I just created a dedicated service for handling this, it stores the history in a Java `List` in memory. The history is deleted whenever the service is restarted, though the same effect can be done with the `clearHistory` method in the service.
+
+Working with enums was tricky, because I couldn't use it as type directly in the request body for fields like `fromUnit` and `toUnit` because I need to know in which category they fall before knowing which enum they will use as their type. And for fields like `category` I could not use the enum as the type directly because when spring uses Jackson it will try to map the category value to the enum type which could be a problem because it will throw an error if the category value is different from the enum in letter casing (i.e. it will refuse values like `time` because it expects `Time` from the enum) which is not the expected behavior of the API.
+
+Setting up swagger UI was easy, but documenting the API endpoints was not. The syntax was new and challenging to me, even though I worked with swagger a lot in Node.Js and Nest.Js but it was my first time with spring boot. I managed to document all APIs with examples for the body request and for the response too along with description for each one.
+
+I created a global exception handler to handle both custom exceptions like `InvalidCategoryException` for when validating the request, and also other validation exceptions and to send them all in a json object, so when the user has multiple issues with validating the request body, he will get all of them at once. 
 
 ### Useful Resources
 
